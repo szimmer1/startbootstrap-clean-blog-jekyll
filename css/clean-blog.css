@@ -395,3 +395,22 @@ img::-moz-selection {
 body {
   webkit-tap-highlight-color: #0085a1;
 }
+
+.profile-img {
+  box-shadow: 0 0 3px #555555;
+  width: auto;
+  display: block;
+}
+
+.about-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.about-box {
+  border: 2px solid #a5a5a5;
+}
+
+a:hover > .about-box {
+  border: 2px solid #0086b3;
+}
