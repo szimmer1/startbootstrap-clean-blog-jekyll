@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Let's not get technical">
+    <meta name="og:description" content="Let's not get technical">
+    <meta name="og:url" content="http://www.shaharzimmerman.com">
+    <meta name="og:title" content="Deciding on a web application framework">
+
+    <title>Deciding on a web application framework - SZ</title>
+
+    <link rel="canonical" href="http://www.shaharzimmerman.com/2014/09/08/Deciding-on-a-web-application-framework/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/clean-blog.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+
+<body>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">SZ</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                
+                <li>
+                    <a href="/about/">About</a>
+                </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Post Header -->
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Deciding on a web application framework</h1>
+                    
+                    <span class="meta">Posted by SZ on September 8, 2014</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+				<p>I've devoted quite a few days in the past month to learning Ruby on Rails.
+This decision seemed logical: since I was a beginner, I needed a framework and language that would be easy to comprehend (hence Ruby).
+Also, I'd seen that many applications use the framework and that many freelancers specialize in programming it. Hey, it's 
+"easy" and there's demand! I was in.</p>
+
+<p>Rails specializes in MVC control and stability. Years of use have created a stable public build with persistent conventions and thriving community.
+With Ruby as a clean and readable language, writing models, controllers, and views is pleasant. Rails also
+provides useful data structures like the <code>session</code> and <code>flash</code> hashes which "remember" your activities even when
+you leave the application.</p>
+
+<p>Something that Rails lacks in, however, is a clean front end. It produces views using embedded ruby in html, which is essentially just using
+html. The essence of web UI is javascript, which Rails has trouble implementing. Rails is great for large application back-ends, but, on it's own,
+can't serve data to the user in a efficient, modern way. Despite this, the giant community around Rails has developed multiple plugins for
+modern front-end Javascript frameworks such as Angular.</p>
+
+<h3>Node.js</h3>
+<p>Is a framework, leveraging the power of javascript, that "uses an event-driven, non-blocking I/O model that make it perfect for
+data-intensive, real-time apps"...I left out the rest but that's the gist. Max Ogden, director of OaklandJS, describes the situation well:</p>
+<blockquote>
+  <p>Rails, the popular web framework, is great for modeling complex business logic, e.g. using code to represent real-life business
+  objects like accounts, loans, etc. Node.js could address that, but since it is designed for I/O problems and doesn't understand "business logic",
+  there would be definite drawbacks.</p>
+</blockquote>
+<p>Node shines in delivering data in a non-blocking way from multiple sources. This works well for views because it allows a programmer to
+create single-page apps, which are the epitomy of good UI in my opinion. Furthermore, since it is written in javascript it can integrate 
+other useful javascript libraries such as AngularJS with ease.</p>
+<p>However, Node.js doesn't provide a total web framework solution. It would be interesting to learn a web framework implementation of Node.js such
+as <a href="github.com/balderdashy/sails">Sails</a> which intends to replicate Rails.</p>
+
+<h3>What to do?</h3>
+<p>The question of my day is, continue learning Rails, which is designed for business logic back-ends, or start learning javascript and Node.js, which
+allows for rapid creation of applications with highly successful UI. When it comes down to it, right now I'm interested in getting an app running, top-to-bottom.
+While it seems like Rails is the easy choice because of my studying thus far and the agility of development, learning a javascript based framework will
+allow for much more freedom in designing a cool front-end. Since my app is going to be small and not really trying to do business, it sure as hell should have a 
+nice UI. It may be time to dabble in UX while I don't have any business to worry about.</p>
+
+
+            </div>
+        </div>
+        <!-- share widgets -->
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <img src="/img/separator.png" class="img-responsive no-source" style="display: block; margin:auto; margin-top:20px;">
+            </div>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1" style="margin-bottom: 20px; margin-top: 10px;">
+                    <div class="g-plusone" data-annotation="inline" data-width="300"></div>
+                    <a class="twitter-share-button"
+                       href="https://twitter.com/share">
+                        Tweet
+                    </a>
+            </div>
+        </div>
+        <!-- about the author -->
+        <div class="row">
+            <a href="/about">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 about-box">
+                    <div class="col-lg-2 col-md-2">
+
+                        <p>
+                            <img src="/img/wetsuit_pic.png" class="img-circle profile-img no-source">
+                        </p>
+
+                    </div>
+                    <div class="col-lg-8 col-md-10">
+
+                        <p style="font-size: 16px">
+                            <span class="about-title">About the author</span><br>
+                            Shahar is graduating from UC Santa Cruz in June with a BS/BA in Biochemistry and Computer Science. His current interests are Docker, learning C++, and getting "real solid" at problem-solving using data structures.
+                        </p>
+
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div id="disqus_thread"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2014/08/26/Combining-Ruby-Modules-and-Classes/" data-toggle="tooltip" data-placement="top" title="Combining Ruby Modules and Classes">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2015/04/02/What-makes-a-good-machine/" data-toggle="tooltip" data-placement="top" title="What makes a good machine?">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<hr>
+
+<!-- inline js hax for images sources -->
+<script>
+    document.addEventListener('DOMContentLoaded', function(event) {
+        $('img').each(function(i) {
+            if ($(this).hasClass('no-source')) return;
+            var href = $(this).attr('src');
+            var link = document.createElement('a');
+            link.href = href;
+            var prettyDomain = link.hostname;
+            $(link)
+                    .text("source: "+prettyDomain)
+                    .addClass('pull-right')
+                    .css('font-size', '14px')
+                    .insertAfter(this);
+        });
+    })
+</script>
+
+<!-- Twitter init -->
+<script>
+    window.twttr=(function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);t._e=[];t.ready=function(f){t._e.push(f);};return t;}(document,"script","twitter-wjs"));
+</script>
+
+<!-- FB init -->
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '819875781392896',
+            xfbml      : true,
+            version    : 'v2.3'
+        });
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- discus init -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'shaharzimmerman';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+<!-- google init -->
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://twitter.com/GnarShahar">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        <a href="https://github.com/szimmer1">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="copyright text-muted">Copyright &copy; SZ 2015</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/clean-blog.min.js "></script>
+
+
+</body>
+
+</html>
