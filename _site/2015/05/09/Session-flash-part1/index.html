@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Let's not get technical">
+    <meta name="og:description" content="Let's not get technical">
+    <meta name="og:url" content="http://www.shaharzimmerman.com">
+    <meta name="og:title" content="How to build a Session Flash in Angular and Bootstrap, Part 1">
+
+    <title>How to build a Session Flash in Angular and Bootstrap, Part 1 - SZ</title>
+
+    <link rel="canonical" href="http://www.shaharzimmerman.com/2015/05/09/Session-flash-part1/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/clean-blog.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+
+<body>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">SZ</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                
+                <li>
+                    <a href="/about/">About</a>
+                </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Post Header -->
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>How to build a Session Flash in Angular and Bootstrap, Part 1</h1>
+                    
+                    <span class="meta">Posted by SZ on May 9, 2015</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+				<p>
+    People coming from Ruby on Rails, web2py, and other opinionated frameworks to Angular and Node.js will
+    surely miss some of the their great features, such as built-in OAuth, synchronization, and security. One of the
+    things I missed most is the useful "Session Flash". Here, I'll show you how to build a fully customizable Session flash
+    with Angular and Bootstrap
+</p>
+<h2>In part 1, we'll set up an Angular app with some user-input features</h2>
+<p>
+    Let's make a to-do list app. Our directory structure will look like this to start out:
+<code><pre>
+index.html
+views
+    - list.html
+js
+    - app.js
+    - controllers.js
+    - directives.js
+</pre></code>
+</p>
+<p>
+    Lets define our angular app first. We're defining a module 'todoApp' which has dependencies of modules
+    'todoControllers' and 'todoDirectives'. To start, we won't put any real code in them.<br>
+    <h3>app.js</h3>
+
+    <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">angular</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;todoApp&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;todoControllers&#39;</span><span class="p">,</span> <span class="s1">&#39;todoDirectives&#39;</span><span class="p">]);</span>
+
+    <span class="p">})(</span><span class="nx">angular</span><span class="p">);</span></code></pre></div>
+
+        <br>
+<h3>controllers.js</h3>
+    <b>Note:</b> we have added a default to-do item in our list, which we'll use to validate that angular is up an running
+    as expected in the next section.
+
+    <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">angular</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;todoControllers&#39;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">&#39;MainController&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;$scope&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
+
+            <span class="nx">$scope</span><span class="p">.</span><span class="nx">items</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="nx">task</span><span class="o">:</span> <span class="s2">&quot;Groceries&quot;</span><span class="p">,</span>
+                    <span class="nx">due</span><span class="o">:</span> <span class="s2">&quot;Tomorrow&quot;</span>
+                <span class="p">}</span>
+            <span class="p">]</span>
+
+            <span class="p">}])</span>
+
+    <span class="p">})(</span><span class="nx">angular</span><span class="p">);</span></code></pre></div>
+
+        <br>
+<h3>directives.js</h3>
+
+    <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">angular</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;todoDirectives&#39;</span><span class="p">,</span> <span class="p">[]);</span>
+
+    <span class="p">})(</span><span class="nx">angular</span><span class="p">);</span></code></pre></div>
+</p>
+<p>
+    Next, let's write our html. This will be the view template for our to-do list. We'll start
+    with a very basic layout, and try to load our default item which we defined in <code>MainController</code>
+
+    <h3>list.html</h3>
+    <div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;h3&gt;</span>My to-do list<span class="nt">&lt;/h3&gt;</span>
+    <span class="nt">&lt;ul&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">ng-repeat=</span><span class="s">&quot;item in items&quot;</span><span class="nt">&gt;</span>
+            Task: {{item.task}}<span class="nt">&lt;br&gt;</span>
+            Due: {{item.due}}
+        <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+        <br>
+<h3>index.html</h3>
+        <b>Note:</b> we're getting Bootstrap css & js, jQuery js, and Angular js via CDN. You must have all these libraries, and include them in this order.
+
+
+    <div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+    <span class="nt">&lt;html&gt;</span>
+    <span class="nt">&lt;head</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;UTF-8&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;title&gt;</span>ToDo<span class="nt">&lt;/title&gt;</span>
+
+        <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/head&gt;</span>
+    <span class="nt">&lt;body</span> <span class="na">ng-app=</span><span class="s">&quot;todoApp&quot;</span><span class="nt">&gt;</span>
+
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span> <span class="na">ng-controller=</span><span class="s">&quot;MainController&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-md-12&quot;</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;ng-include</span> <span class="na">src=</span><span class="s">&quot;&#39;views/list.html&#39;&quot;</span><span class="nt">&gt;&lt;/ng-include&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;//code.jquery.com/jquery-1.11.3.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;js/controllers.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;js/directives.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;js/app.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+    <span class="nt">&lt;/html&gt;</span></code></pre></div>
+
+        <br>
+    Now if you serve index.html, you should see this
+        <img src="/img/todo_1.png" class="no-source">
+        Angular is up and running!<br>
+        We still, however, need to add a form so someone can add new items. Let's do this now.
+</p>
+        <p>
+            <h3>Add inputs to list.html</h3>
+            We want to add a field for <code>task</code> and a field for <code>due</code>. Here's the new list.html:
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">placeholder=</span><span class="s">&quot;Task&quot;</span> <span class="na">ng-model=</span><span class="s">&quot;task&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">placeholder=</span><span class="s">&quot;Due&quot;</span> <span class="na">ng-model=</span><span class="s">&quot;due&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">ng-click=</span><span class="s">&quot;makeItem()&quot;</span><span class="nt">&gt;</span>Add item<span class="nt">&lt;/button&gt;</span>
+
+<span class="nt">&lt;h3&gt;</span>My to-do list<span class="nt">&lt;/h3&gt;</span>
+<span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">ng-repeat=</span><span class="s">&quot;item in items&quot;</span><span class="nt">&gt;</span>
+        Task: <span class="nt">&lt;br&gt;</span>
+        Due: 
+    <span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+        <br>
+        And the new look:
+        <img src="/img/todo_2.png" class="no-source">
+        We'll now hook up the functionality our <code>MainController</code>
+        </p>
+        <p>
+            <h3>Push to-do item to list</h3>
+        We need two more 2-way-bound scope variables, <code>task</code> and <code>due</code>. In our function
+        <code>makeItem</code>, we take these two variables, append them to the list, and reset their values.
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">angular</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;todoControllers&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">&#39;MainController&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;$scope&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
+
+            <span class="nx">$scope</span><span class="p">.</span><span class="nx">items</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="nx">task</span><span class="o">:</span> <span class="s2">&quot;Groceries&quot;</span><span class="p">,</span>
+                    <span class="nx">due</span><span class="o">:</span> <span class="s2">&quot;Tomorrow&quot;</span>
+                <span class="p">}</span>
+            <span class="p">]</span>
+
+            <span class="nx">$scope</span><span class="p">.</span><span class="nx">task</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+            <span class="nx">$scope</span><span class="p">.</span><span class="nx">due</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+
+            <span class="nx">$scope</span><span class="p">.</span><span class="nx">makeItem</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+                    <span class="nx">task</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">task</span><span class="p">,</span>
+                    <span class="nx">due</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">due</span>
+                <span class="p">})</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">task</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">due</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+            <span class="p">}</span>
+    <span class="p">}])</span>
+
+<span class="p">})(</span><span class="nx">angular</span><span class="p">);</span></code></pre></div>
+        </p>
+        <p>
+            We now have in fully functioning to-do list Angular app. In
+            <a href="/2015/05/09/Session-flash-part2/">Part 2</a>
+            , we'll implement our "Session Flash" module.
+        </p>
+
+            </div>
+        </div>
+        <!-- share widgets -->
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <img src="/img/separator.png" class="img-responsive no-source" style="display: block; margin:auto; margin-top:20px;">
+            </div>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1" style="margin-bottom: 20px; margin-top: 10px;">
+                    <div class="g-plusone" data-annotation="inline" data-width="300"></div>
+                    <a class="twitter-share-button"
+                       href="https://twitter.com/share">
+                        Tweet
+                    </a>
+            </div>
+        </div>
+        <!-- about the author -->
+        <div class="row">
+            <a href="/about">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 about-box">
+                    <div class="col-lg-2 col-md-2">
+
+                        <p>
+                            <img src="/img/wetsuit_pic.png" class="img-circle profile-img no-source">
+                        </p>
+
+                    </div>
+                    <div class="col-lg-8 col-md-10">
+
+                        <p style="font-size: 16px">
+                            <span class="about-title">About the author</span><br>
+                            Shahar is graduating from UC Santa Cruz in June with a BS/BA in Biochemistry and Computer Science. His current interests are Docker, learning C++, and getting "real solid" at problem-solving using data structures.
+                        </p>
+
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div id="disqus_thread"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2015/04/02/What-makes-a-good-machine/" data-toggle="tooltip" data-placement="top" title="What makes a good machine?">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2015/05/09/Session-flash-part2/" data-toggle="tooltip" data-placement="top" title="How to build a Session Flash in Angular and Bootstrap, Part 2">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<hr>
+
+<!-- inline js hax for images sources -->
+<script>
+    document.addEventListener('DOMContentLoaded', function(event) {
+        $('img').each(function(i) {
+            if ($(this).hasClass('no-source')) return;
+            var href = $(this).attr('src');
+            var link = document.createElement('a');
+            link.href = href;
+            var prettyDomain = link.hostname;
+            $(link)
+                    .text("source: "+prettyDomain)
+                    .addClass('pull-right')
+                    .css('font-size', '14px')
+                    .insertAfter(this);
+        });
+    })
+</script>
+
+<!-- Twitter init -->
+<script>
+    window.twttr=(function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);t._e=[];t.ready=function(f){t._e.push(f);};return t;}(document,"script","twitter-wjs"));
+</script>
+
+<!-- FB init -->
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '819875781392896',
+            xfbml      : true,
+            version    : 'v2.3'
+        });
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- discus init -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'shaharzimmerman';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+<!-- google init -->
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://twitter.com/GnarShahar">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        <a href="https://github.com/szimmer1">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="copyright text-muted">Copyright &copy; SZ 2015</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/clean-blog.min.js "></script>
+
+
+</body>
+
+</html>

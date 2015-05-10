@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Let's not get technical">
+    <meta name="og:description" content="Let's not get technical">
+    <meta name="og:url" content="http://www.shaharzimmerman.com">
+    <meta name="og:title" content="Combining Ruby Modules and Classes">
+
+    <title>Combining Ruby Modules and Classes - SZ</title>
+
+    <link rel="canonical" href="http://www.shaharzimmerman.com/2014/08/26/Combining-Ruby-Modules-and-Classes/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/clean-blog.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+
+<body>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">SZ</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                
+                <li>
+                    <a href="/about/">About</a>
+                </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Post Header -->
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Combining Ruby Modules and Classes</h1>
+                    
+                    <span class="meta">Posted by SZ on August 26, 2014</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+				<p><b>Ah, summer...</b></p>
+<p>I'm currently learning Ruby on Rails.  As a total beginner to Ruby,
+this task has proven to be a difficult undertaking. To an experienced
+programmer, I'm sure that picking up another language is a small matter of 
+learning syntax and then
+a few new ways of organizing scopes and abstract data types.
+However, to someone like me, who only really started programming a few months
+ago and has working knowledge of exactly <em>one</em> language, Java, learning 
+a language like Ruby ain't a cakewalk. I've decided to write regular
+instructive posts on the language in order to help myself solidify my own understanding
+as well as anyone finding themselves in this part of the internet.<br>
+
+<h3>Differences between Ruby and Java</h3>
+<p>In Java, we have <em>classes</em>, which define an instance of the class (object) and way to manipulate it
+(methods, both static and instance). For example, we may have a class definition of a <code>Rational</code> number
+extending <code>Integer</code>:
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">Rational</span> <span class="kd">extends</span> <span class="n">Integer</span> <span class="o">{</span>
+  <span class="c1">//private class variables</span>
+  <span class="kd">private</span> <span class="kt">int</span> <span class="n">numerator</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kt">int</span> <span class="n">denominator</span><span class="o">;</span>
+
+  <span class="c1">//initializers</span>
+  <span class="kd">public</span> <span class="nf">Rational</span><span class="o">(</span><span class="kt">int</span> <span class="n">num</span><span class="o">,</span> <span class="kt">int</span> <span class="n">denom</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">numerator</span> <span class="o">=</span> <span class="n">num</span><span class="o">;</span>
+    <span class="n">denominator</span> <span class="o">=</span> <span class="n">denom</span><span class="o">;</span>
+    <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="nf">Rational</span><span class="o">(){</span>
+    <span class="n">numerator</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="n">denominator</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="c1">//in reality you can&#39;t divide by 0</span>
+  <span class="o">}</span>
+  
+  <span class="c1">//instance method</span>
+  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getNum</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">numerator</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="c1">//static method</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">Rational</span> <span class="nf">add</span><span class="o">(</span><span class="n">Rational</span> <span class="n">one</span><span class="o">,</span><span class="n">Rational</span> <span class="n">two</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">Rational</span> <span class="n">sum</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Rational</span><span class="o">();</span>
+  <span class="n">sum</span><span class="o">.</span><span class="na">denominator</span> <span class="o">=</span> <span class="n">GCD</span><span class="o">(</span><span class="n">one</span><span class="o">.</span><span class="na">denominator</span> <span class="o">+</span> <span class="n">two</span><span class="o">.</span><span class="na">denominator</span><span class="o">);</span>
+  <span class="n">sum</span><span class="o">.</span><span class="na">numerator</span> <span class="o">=</span> <span class="n">one</span><span class="o">.</span><span class="na">numerator</span> <span class="o">*</span> <span class="o">(</span><span class="n">GCD</span><span class="o">/</span><span class="n">one</span><span class="o">.</span><span class="na">denominator</span><span class="o">)</span> <span class="o">+</span> <span class="n">two</span><span class="o">.</span><span class="na">numerator</span> <span class="o">*</span> <span class="o">(</span><span class="n">GCD</span><span class="o">/</span><span class="n">two</span><span class="o">.</span><span class="na">denominator</span><span class="o">);</span>
+  <span class="k">return</span> <span class="n">sum</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+<p>What we've done is extended the <code>Integer</code> class,  which let's say provides us a <code class="method">GCD</code> method,
+to a <code>Rational</code> class which includes class variables, instance initializers, and a static "class" method <code class="method">add</code>. 
+Importantly, <b>all class methods must be defined within the class</b>. This makes it tedious to rewrite methods that often use similar parameters.</p>
+
+<p>In Ruby, several things are different. You don't have to declare class variables. You don't have to define class and instance methods within the class.
+You can define a method that deals with an instance of the class, <em>outside of the class definition</em>, in a module.
+For example, let's implement <code>Rational</code> in Ruby:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Rational</span> <span class="o">&lt;</span> <span class="nb">Integer</span>
+  <span class="c1"># initializer</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="o">*</span><span class="n">ints</span><span class="p">)</span>
+    <span class="vi">@num</span><span class="p">,</span> <span class="vi">@denom</span> <span class="o">=</span> <span class="n">ints</span>
+  <span class="k">end</span>
+
+  <span class="c1"># accessors</span>
+  <span class="kp">attr_accessor</span> <span class="ss">:denom</span>
+  <span class="kp">attr_accessor</span> <span class="ss">:num</span>
+<span class="k">end</span></code></pre></div>
+<p>Yup, that's pretty much all you need in a class definition in Ruby. To get the instance method, <code>get_num</code> (changed for Ruby naming convention)
+, and the static method, <code>add</code>,
+we use two different Ruby <em>modules</em>. Modules exist in Ruby to allow inheritance of methods without inheritance of the entire parent class. Multiple classes
+can <em>mix in</em> a module to share common API methods easily. Our first module will be for <code>get_num</code>:
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">module</span> <span class="nn">GetNums</span>
+  <span class="k">def</span> <span class="nf">get_num</span> 
+    <span class="vi">@num</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+Our second module:
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">module</span> <span class="nn">Add</span>
+  <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="o">*</span><span class="n">nums</span><span class="p">)</span> 
+    <span class="n">sum</span> <span class="o">=</span> <span class="no">Rational</span><span class="o">.</span><span class="n">new</span>
+    <span class="n">sum</span><span class="o">.</span><span class="n">denom</span> <span class="o">=</span> <span class="no">GCD</span><span class="p">(</span><span class="n">nums</span><span class="o">.</span><span class="n">denom</span><span class="p">)</span>
+    <span class="n">nums</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">num</span><span class="o">|</span>
+      <span class="n">sum</span><span class="o">.</span><span class="n">num</span> <span class="o">+=</span> <span class="no">GCD</span><span class="o">/</span><span class="n">num</span><span class="o">.</span><span class="n">denom</span> <span class="o">*</span> <span class="n">num</span><span class="o">.</span><span class="n">num</span>
+    <span class="k">end</span>
+    <span class="k">return</span> <span class="n">sum</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+<blockquote>A nice feature on ruby is the ability to include an undetermined number of arguments, <code>*args</code> in methods</blockquote>
+<p>You may be wondering why we made a module for instance methods and a module for static methods instead of making one module containing both. The reason is 
+that Ruby only allows mixing in of either instance methods <em>or</em> static methods at any one time. We use the <code>require</code> keyword to mix in static methods
+and the <code>include</code> keyword to mix in instance methods (i for instance!). I don't know if we could just use both keywords on a single module that has both instance
+and static methods; that'd be a good experiment. Now we mix in our modules into our Ruby <code>Rational</code> class:
+
+<blockquote>One interesting thing about Ruby is that instance variables <em>are never private</em>. Anyone can access or overwrite an instance variable if they
+know it using <code>object.instance_variable_get(:@var)</code>. While this is a strength for usability, it seems to me like a pretty major security issue.</blockquote>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Rational</span> <span class="o">&lt;</span> <span class="nb">Integer</span>
+
+  <span class="kp">include</span> <span class="no">GetNums</span>
+
+  <span class="nb">require</span> <span class="no">Add</span>
+
+  <span class="c1"># initializer</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="o">*</span><span class="n">ints</span><span class="p">)</span>
+    <span class="vi">@num</span><span class="p">,</span> <span class="vi">@denom</span> <span class="o">=</span> <span class="n">ints</span>
+  <span class="k">end</span>
+
+  <span class="c1"># accessors</span>
+  <span class="kp">attr_accessor</span> <span class="ss">:denom</span>
+  <span class="kp">attr_accessor</span> <span class="ss">:num</span>
+<span class="k">end</span></code></pre></div>
+<p>Now we can use our Ruby class to do the stuff the methods do:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">real</span> <span class="o">=</span> <span class="no">Rational</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="nb">puts</span> <span class="n">real</span><span class="o">.</span><span class="n">get_num</span>
+
+<span class="n">real2</span> <span class="o">=</span> <span class="no">Rational</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
+<span class="nb">puts</span> <span class="n">add</span><span class="p">(</span><span class="n">real</span><span class="p">,</span><span class="n">real1</span><span class="p">)</span></code></pre></div>
+
+
+            </div>
+        </div>
+        <!-- share widgets -->
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <img src="/img/separator.png" class="img-responsive no-source" style="display: block; margin:auto; margin-top:20px;">
+            </div>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1" style="margin-bottom: 20px; margin-top: 10px;">
+                    <div class="g-plusone" data-annotation="inline" data-width="300"></div>
+                    <a class="twitter-share-button"
+                       href="https://twitter.com/share">
+                        Tweet
+                    </a>
+            </div>
+        </div>
+        <!-- about the author -->
+        <div class="row">
+            <a href="/about">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 about-box">
+                    <div class="col-lg-2 col-md-2">
+
+                        <p>
+                            <img src="/img/wetsuit_pic.png" class="img-circle profile-img no-source">
+                        </p>
+
+                    </div>
+                    <div class="col-lg-8 col-md-10">
+
+                        <p style="font-size: 16px">
+                            <span class="about-title">About the author</span><br>
+                            Shahar is graduating from UC Santa Cruz in June with a BS/BA in Biochemistry and Computer Science. His current interests are Docker, learning C++, and getting "real solid" at problem-solving using data structures.
+                        </p>
+
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div id="disqus_thread"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2014/08/24/First-post/" data-toggle="tooltip" data-placement="top" title="First post">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2014/09/08/Deciding-on-a-web-application-framework/" data-toggle="tooltip" data-placement="top" title="Deciding on a web application framework">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<hr>
+
+<!-- inline js hax for images sources -->
+<script>
+    document.addEventListener('DOMContentLoaded', function(event) {
+        $('img').each(function(i) {
+            if ($(this).hasClass('no-source')) return;
+            var href = $(this).attr('src');
+            var link = document.createElement('a');
+            link.href = href;
+            var prettyDomain = link.hostname;
+            $(link)
+                    .text("source: "+prettyDomain)
+                    .addClass('pull-right')
+                    .css('font-size', '14px')
+                    .insertAfter(this);
+        });
+    })
+</script>
+
+<!-- Twitter init -->
+<script>
+    window.twttr=(function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);t._e=[];t.ready=function(f){t._e.push(f);};return t;}(document,"script","twitter-wjs"));
+</script>
+
+<!-- FB init -->
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '819875781392896',
+            xfbml      : true,
+            version    : 'v2.3'
+        });
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- discus init -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'shaharzimmerman';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+<!-- google init -->
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://twitter.com/GnarShahar">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        <a href="https://github.com/szimmer1">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="copyright text-muted">Copyright &copy; SZ 2015</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/clean-blog.min.js "></script>
+
+
+</body>
+
+</html>
